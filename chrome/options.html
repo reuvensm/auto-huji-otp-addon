@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auto Prefix OTP - Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="header-left">
+        <img src="icons/icon48.png" alt="Auto Prefix OTP Logo" class="logo-img" />
+        <div>
+          <h1>Auto Prefix OTP</h1>
+          <p class="subtitle">Login credentials &amp; TOTP generator</p>
+        </div>
+      </div>
+      <label class="switch" title="Enable or pause automatic form filling">
+        <input type="checkbox" id="enabled" checked />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <div class="setup-help-bar">
+      <a
+        href="https://ca.huji.ac.il/%D7%94%D7%96%D7%93%D7%94%D7%95%D7%AA-%D7%91%D7%90%D7%9E%D7%A6%D7%A2%D7%95%D7%AA-google-authenticator"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="setup-help-link"
+      >
+        <span class="setup-help-icon">ℹ️</span>
+        <span>Don't have an OTP secret yet? <strong>Setup guide &amp; certificate tutorial ↗</strong></span>
+      </a>
+      <div class="setup-help-tooltip">
+        Click to open the official HUJI tutorial on setting up Google Authenticator, choosing your PIN prefix, and getting your OTP QR code / secret key.
+      </div>
+    </div>
+
+    <form id="settings-form" autocomplete="off">
+      <div class="field-group">
+        <div class="label-row">
+          <label for="idNumber">ID Number</label>
+          <span class="badge-hint" id="id-badge">9 digits</span>
+        </div>
+        <input
+          type="text"
+          id="idNumber"
+          name="idNumber"
+          inputmode="numeric"
+          maxlength="9"
+          placeholder="e.g. 123456789"
+          spellcheck="false"
+        />
+        <span class="hint" id="id-hint">Auto-filled into the 9-digit ID field</span>
+      </div>
+
+      <div class="field-group">
+        <div class="label-row">
+          <div class="label-with-help">
+            <label for="prefix">Password / PIN Prefix</label>
+            <span class="help-trigger" tabindex="0" aria-label="Where to find PIN Prefix">
+              ?
+              <span class="help-popover">
+                <span class="help-popover-title">Where to set your PIN Prefix</span>
+                <img src="prefix_help_picture.jpg" alt="PIN Prefix setup help" />
+              </span>
+            </span>
+          </div>
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="prefix"
+            name="prefix"
+            placeholder="e.g. 1234"
+            spellcheck="false"
+          />
+          <button type="button" class="toggle-vis" data-target="prefix" title="Show/Hide Prefix">
+            Show
+          </button>
+        </div>
+        <span class="hint">Prepended before the 6-digit OTP code</span>
+      </div>
+
+      <div class="field-group">
+        <div class="label-row">
+          <div class="label-with-help">
+            <label for="secret">TOTP Secret (Base32)</label>
+            <span class="help-trigger" tabindex="0" aria-label="Where to find QR Code or Secret">
+              ?
+              <span class="help-popover">
+                <span class="help-popover-title">Where to find your QR Code &amp; Secret</span>
+                <img src="qr_help_picture.png" alt="QR Code and Secret setup help" />
+              </span>
+            </span>
+          </div>
+          <button type="button" id="qr-upload-btn" class="qr-link-btn" title="Choose a QR code image file">
+            Upload QR Image
+          </button>
+        </div>
+        <div class="input-wrapper">
+          <input
+            type="password"
+            id="secret"
+            name="secret"
+            placeholder="Base32 key or paste otpauth:// link"
+            spellcheck="false"
+          />
+          <button type="button" class="toggle-vis" data-target="secret" title="Show/Hide Secret">
+            Show
+          </button>
+        </div>
+        <input type="file" id="qr-file-input" accept="image/*" hidden />
+        <div class="qr-dropzone" id="qr-dropzone" tabindex="0" title="Click and press Ctrl+V to paste a QR code screenshot, or drag & drop an image">
+          <span class="qr-icon">📷</span>
+          <div class="qr-dropzone-text">
+            <strong>Paste QR Code (`Ctrl+V`)</strong> or drop QR image here
+          </div>
+          <button type="button" id="paste-qr-btn" class="secondary-btn">Paste Image</button>
+        </div>
+        <span class="hint" id="secret-hint">Base32 key (A–Z, 2–7) or scan/paste QR code (`otpauth://...`)</span>
+      </div>
+
+      <div class="preview-card" id="preview-card">
+        <div class="preview-top">
+          <div class="preview-info">
+            <span class="preview-label">Live OTP Preview</span>
+            <span class="preview-code" id="preview-code">------</span>
+          </div>
+          <div class="preview-meta">
+            <span class="preview-timer" id="preview-timer">--s</span>
+            <button type="button" id="copy-otp-btn" class="secondary-btn" disabled title="Copy 6-digit OTP">OTP</button>
+            <button type="button" id="copy-btn" class="secondary-btn" disabled title="Copy Prefix + OTP">Copy Full</button>
+          </div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <div class="btn-group">
+          <button type="submit" id="save-btn" class="primary-btn">Save Settings</button>
+          <button type="button" id="clear-btn" class="ghost-btn" title="Clear saved credentials">Clear</button>
+        </div>
+        <span id="status-msg" class="status-msg" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <footer class="footer">
+      <span>🔒 Stored 100% locally on this browser. Never sent over the network.</span>
+    </footer>
+  </div>
+
+  <script src="jsQR.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
