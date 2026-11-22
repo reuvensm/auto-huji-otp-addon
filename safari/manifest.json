@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Auto Prefix OTP",
+  "version": "1.2.1",
+  "description": "Unofficial helper that locally calculates TOTP and auto-fills ID and Prefix + OTP on login pages.",
+  "homepage_url": "https://github.com/reuvensm/auto-huji-otp-addon",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://idp.cc.huji.ac.il/simplesaml/module.php/hujicc/*"
+  ],
+  "action": {
+    "default_popup": "options.html",
+    "default_title": "Auto Prefix OTP Settings",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://idp.cc.huji.ac.il/simplesaml/module.php/hujicc/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
