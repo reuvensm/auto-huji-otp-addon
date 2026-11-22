@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Auto Prefix OTP",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Unofficial helper that locally calculates TOTP and auto-fills ID and Prefix + OTP on login pages.",
   "homepage_url": "https://github.com/reuvensm/auto-huji-otp-addon",
   "icons": {

@@ -52,3 +52,11 @@ An unofficial, lightweight browser extension for **Google Chrome / Brave / Edge*
 
 - **Privacy Policy:** See [PRIVACY.md](PRIVACY.md). All data is stored strictly in local browser storage (`storage.local`) and is never transmitted anywhere.
 - **Disclaimer:** This is an independent, unofficial community tool and is not affiliated with, endorsed by, or maintained by The Hebrew University of Jerusalem (HUJI).
+
+---
+
+## ☕ Support
+
+If this extension saves you time, you can support its development on Ko-fi:
+
+[![Support me on Ko-fi](https://img.shields.io/badge/Support%20me%20on-Ko--fi-FF5E5B?style=for-the-badge&logo=ko-fi&logoColor=white)](https://ko-fi.com/reuvensm)
